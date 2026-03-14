@@ -8,6 +8,7 @@ const configCanvas = {
     brushColor: "#000",
     catenaryColor: "transparent",
     hideGridX: true,
+    hideGridY: true,
     canvasWidth: window.innerWidth,
     canvasHeight: window.innerHeight,
     disabled: false,

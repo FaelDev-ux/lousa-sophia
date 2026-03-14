@@ -1,8 +1,13 @@
-export default function ConfirmationInput() {
+export default function ConfirmationInput({ value, onChange}) {
   return (
-    <div className="">
-      <p>SophIA entendeu...</p>
-      <input className="border rounded-[10px] px-1 w-150" type="text" placeholder="2 + 9 = x - 5" name="" id="" />
-    </div>
-  )
+    <input
+      className="w-full outline-0 min-w-0 text-sm placeholder:text-gray-400 text-gray-800 bg-transparent border-0"
+      type="text"
+      value={value}
+      onChange={onChange}
+      placeholder="Digite ou corrija a expressão"
+      name=""
+      id=""
+    />
+  );
 }

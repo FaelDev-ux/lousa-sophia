@@ -1,11 +1,7 @@
 import ConfirmationInput from "./ConfirmationInput";
 import Button from "./Button";
-import { useState } from "react";
 
-export default function SophiaBar() {
-  const [status, setStatus] = useState("idle");
-  const [expression, setExpression] = useState('')
-
+export default function SophiaBar({ status, expression, onExpressionChange }) {
   const isIdle = status === "idle";
   const isThinking = status === "thinking";
   const isUnderstood = status === "understood";
@@ -18,9 +14,10 @@ export default function SophiaBar() {
     error: "border-red-200 bg-red-50",
   };
 
-
   return (
-    <div className={`flex gap-3 items-center border ${statusStyles[status]} px-3 py-0 rounded-2xl`}>
+    <div
+      className={`flex gap-3 items-center border ${statusStyles[status] || statusStyles.idle} px-3 py-0 rounded-2xl`}
+    >
       <span className="text-sm shrink-0 font-medium text-gray-600">
         {isThinking && "Estou interpretando..."}
         {isUnderstood && "Eu entendi: "}
@@ -30,7 +27,10 @@ export default function SophiaBar() {
 
       {(isUnderstood || isError) && (
         <>
-          <ConfirmationInput value={expression} onChange={(e) => setExpression(e.target.value)} />
+          <ConfirmationInput
+            value={expression}
+            onChange={(e) => onExpressionChange(e.target.value)}
+          />
           <Button type="confirm" text="Confirmar" />
         </>
       )}

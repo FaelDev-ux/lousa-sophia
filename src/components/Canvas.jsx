@@ -1,3 +1,4 @@
+import { forwardRef, useRef, useImperativeHandle } from "react";
 import CanvasDraw from "react-canvas-draw";
 
 const configCanvas = {
@@ -23,7 +24,14 @@ const configCanvas = {
     zoomExtents: { min: 1, max: 10 },
   };
 
+const Canvas = forwardRef(function Canvas(_, ref) {
+  const canvasRef = useRef(null);
 
-export default function Canvas() {
-  return (<CanvasDraw {...configCanvas}/>);
-}
+  useImperativeHandle(ref, () => ({
+    clear: () => canvasRef.current?.clear(),
+  }));
+
+  return <CanvasDraw ref={canvasRef} {...configCanvas} />;
+});
+
+export default Canvas;

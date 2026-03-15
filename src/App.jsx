@@ -87,8 +87,12 @@ function App() {
       setExplanationText(analysis?.explanation || "Sem explicação disponível.");
     } catch (error) {
       console.error(error);
+      const normalizedMessage =
+        error?.message?.toLowerCase?.().includes("failed to fetch")
+          ? "Escreva novamente."
+          : error?.message;
       setExplanationError(
-        error?.message ||
+        normalizedMessage ||
           "Não foi possível gerar a explicação agora. Tente novamente."
       );
     } finally {

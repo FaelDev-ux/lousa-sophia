@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { dataUrlToFile } from "./utils/image";
 import { analyzeMath, transcribeImage } from "./services/sophiaApi";
 import Header from "./components/Header";
 import Canvas from "./components/Canvas";
 import FloatingToolsMenu from "./components/FloatingToolsMenu";
+import FloatingHistoryMenu from "./components/FloatingHistoryMenu";
 import { CHALK_COLORS } from "./constants/drawing";
 
 
@@ -20,6 +21,32 @@ function App() {
   const [explanationText, setExplanationText] = useState("");
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [explanationError, setExplanationError] = useState("");
+  const [historyItems, setHistoryItems] = useState([]);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("sophia.history");
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        setHistoryItems(parsed);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar histórico:", error);
+    }
+  }, []);
+
+  const persistHistory = (updater) => {
+    setHistoryItems((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      try {
+        localStorage.setItem("sophia.history", JSON.stringify(next));
+      } catch (error) {
+        console.error("Erro ao salvar histórico:", error);
+      }
+      return next;
+    });
+  };
 
   const handleClear = () => {
     canvasRef.current?.clear();
@@ -84,7 +111,16 @@ function App() {
       }
 
       const analysis = await analyzeMath(mathText);
-      setExplanationText(analysis?.explanation || "Sem explicação disponível.");
+      const explanation =
+        analysis?.explanation || "Sem explicação disponível.";
+      setExplanationText(explanation);
+
+      const newEntry = {
+        expression: mathText,
+        explanation,
+        createdAt: new Date().toISOString(),
+      };
+      persistHistory((prev) => [newEntry, ...prev].slice(0, 20));
     } catch (error) {
       console.error(error);
       const normalizedMessage =
@@ -125,6 +161,7 @@ function App() {
         activeColor={activeColor}
         brushSize={brushSize}
       />
+      <FloatingHistoryMenu items={historyItems} />
       <FloatingToolsMenu
         activeTool={activeTool}
         onToolChange={setActiveTool}

@@ -71,6 +71,9 @@ const Canvas = forwardRef(function Canvas(
 
   useImperativeHandle(ref, () => ({
     clear: () => canvasRef.current?.clear(),
+    getCanvasInstance: () => canvasRef.current,
+    getPngDataUrl: () => canvasRef.current?.getDataURL("png", false, "#FFF"),
+    getSaveData: () => canvasRef.current?.getSaveData(),
   }));
 
   return <CanvasDraw ref={canvasRef} {...configCanvas} />;

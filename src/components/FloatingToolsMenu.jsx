@@ -15,6 +15,12 @@ export default function FloatingToolsMenu({
   onColorChange,
   brushSize,
   onBrushSizeChange,
+  isExplanationOpen,
+  onToggleExplanation,
+  onCloseExplanation,
+  explanationText,
+  explanationLoading,
+  explanationError,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -103,15 +109,57 @@ export default function FloatingToolsMenu({
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-slate-900 text-xl text-white shadow-xl transition hover:-translate-y-0.5"
-        aria-expanded={isOpen}
-        aria-label="Abrir ferramentas"
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onToggleExplanation}
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-white text-xl text-slate-900 shadow-xl transition hover:-translate-y-0.5"
+          aria-expanded={isExplanationOpen}
+          aria-label="Abrir explicação"
+        >
+          💡
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-slate-900 text-xl text-white shadow-xl transition hover:-translate-y-0.5"
+          aria-expanded={isOpen}
+          aria-label="Abrir ferramentas"
+        >
+          {isOpen ? "×" : "✍️"}
+        </button>
+      </div>
+
+      <div
+        className={`fixed bottom-6 left-1/2 z-40 w-[min(90vw,520px)] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 px-5 py-4 shadow-2xl backdrop-blur transition-all duration-200 ${
+          isExplanationOpen
+            ? "translate-y-0 opacity-100"
+            : "translate-y-6 opacity-0 pointer-events-none"
+        }`}
       >
-        {isOpen ? "×" : "✍️"}
-      </button>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900">
+              Explicação da conta
+            </h3>
+            <p className="mt-1 text-sm text-slate-600">
+              {explanationLoading
+                ? "A SophIA está pensando..."
+                : explanationError
+                  ? explanationError
+                  : explanationText ||
+                    "Clique no botão de explicação para gerar o passo a passo."}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onCloseExplanation}
+            className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-500"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

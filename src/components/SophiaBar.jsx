@@ -1,7 +1,12 @@
 import ConfirmationInput from "./ConfirmationInput";
 import Button from "./Button";
 
-export default function SophiaBar({ status, expression, onExpressionChange }) {
+export default function SophiaBar({
+  status,
+  expression,
+  onExpressionChange,
+  onToggleExplanation,
+}) {
   const isIdle = status === "idle";
   const isThinking = status === "thinking";
   const isUnderstood = status === "understood";
@@ -31,7 +36,7 @@ export default function SophiaBar({ status, expression, onExpressionChange }) {
             value={expression}
             onChange={(e) => onExpressionChange(e.target.value)}
           />
-          <Button type="confirm" text="Confirmar" />
+          <Button onClick={onToggleExplanation} type="confirm" text="Confirmar" />
         </>
       )}
     </div>

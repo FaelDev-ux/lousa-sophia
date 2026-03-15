@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { CHALK_COLORS, DRAWING_TOOLS } from "../constants/drawing";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSliders, faLightbulb, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const TOOL_LABELS = {
   pen: "Caneta",
@@ -16,7 +18,7 @@ export default function FloatingToolsMenu({
   brushSize,
   onBrushSizeChange,
   isExplanationOpen,
-  onToggleExplanation,
+  onOpenExplanation,
   onCloseExplanation,
   explanationText,
   explanationLoading,
@@ -27,6 +29,14 @@ export default function FloatingToolsMenu({
   const activeToolLabel = useMemo(() => {
     return TOOL_LABELS[activeTool] || "Ferramentas";
   }, [activeTool]);
+
+  const displayedText = explanationLoading
+  ? "A SophIA está pensando..."
+  : explanationError
+  ? explanationError
+  : explanationText
+  ? explanationText
+  : "Desenhe algo e confirme para receber uma explicação";
 
   return (
     <div className="fixed bottom-4 right-3 z-50 flex flex-col items-end">
@@ -100,9 +110,7 @@ export default function FloatingToolsMenu({
             max="18"
             step="1"
             value={brushSize}
-            onChange={(event) =>
-              onBrushSizeChange(Number(event.target.value))
-            }
+            onChange={(event) => onBrushSizeChange(Number(event.target.value))}
             className="h-2 w-full cursor-pointer accent-slate-900"
           />
           <span className="text-xs text-slate-500">Grossa</span>
@@ -112,21 +120,21 @@ export default function FloatingToolsMenu({
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={onToggleExplanation}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-white text-xl text-slate-900 shadow-xl transition hover:-translate-y-0.5"
+          onClick={isExplanationOpen ? onCloseExplanation : onOpenExplanation}
+          className="flex h-14 cursor-pointer w-14 items-center justify-center rounded-full border border-slate-900 bg-white text-xl text-slate-900 shadow-xl transition hover:-translate-y-0.5"
           aria-expanded={isExplanationOpen}
           aria-label="Abrir explicação"
         >
-          💡
+          {isExplanationOpen ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon className="text-yellow-500" icon={faLightbulb} />}
         </button>
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-slate-900 text-xl text-white shadow-xl transition hover:-translate-y-0.5"
+          className="flex h-14 cursor-pointer w-14 items-center justify-center rounded-full border border-slate-900 bg-slate-900 text-xl text-white shadow-xl transition hover:-translate-y-0.5"
           aria-expanded={isOpen}
           aria-label="Abrir ferramentas"
         >
-          {isOpen ? "×" : "✍️"}
+          {isOpen ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faSliders} />}
         </button>
       </div>
 
@@ -137,26 +145,19 @@ export default function FloatingToolsMenu({
             : "translate-y-6 opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex relative items-start justify-between gap-4">
           <div>
             <h3 className="text-sm font-semibold text-slate-900">
               Explicação da conta
             </h3>
-            <p className="mt-1 text-sm text-slate-600">
-              {explanationLoading
-                ? "A SophIA está pensando..."
-                : explanationError
-                  ? explanationError
-                  : explanationText ||
-                    "Clique no botão de explicação para gerar o passo a passo."}
-            </p>
+            <p className="mt-1 text-s whitespace-pre-line text-slate-600">{displayedText}</p>
           </div>
           <button
             type="button"
             onClick={onCloseExplanation}
-            className="rounded-full border border-slate-300 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-500"
+            className="rounded-full absolute -top-7 -right-8  cursor-pointer border border-slate-300 px-2 py-0 text-base font-semibold text-white bg-red-500 transition hover:border-slate-500"
           >
-            Fechar
+            ×
           </button>
         </div>
       </div>

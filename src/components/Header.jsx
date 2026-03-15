@@ -7,6 +7,7 @@ export default function Header({
   status,
   expression,
   onReadCanvas,
+  onToggleExplanation,
   onExpressionChange,
 }) {
   return (
@@ -15,6 +16,7 @@ export default function Header({
       <SophiaBar
         status={status}
         expression={expression}
+        onToggleExplanation={onToggleExplanation}
         onExpressionChange={onExpressionChange}
       />
 

@@ -116,6 +116,7 @@ function App() {
         onReadCanvas={handleReadCanvas}
         status={status}
         expression={expression}
+        onToggleExplanation={handleToggleExplanation}
         onExpressionChange={setExpression}
       />
       <Canvas
@@ -132,7 +133,7 @@ function App() {
         brushSize={brushSize}
         onBrushSizeChange={setBrushSize}
         isExplanationOpen={isExplanationOpen}
-        onToggleExplanation={handleToggleExplanation}
+        onOpenExplanation={() => setIsExplanationOpen(true)}
         onCloseExplanation={() => setIsExplanationOpen(false)}
         explanationText={explanationText}
         explanationLoading={explanationLoading}

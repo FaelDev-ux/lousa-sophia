@@ -3,14 +3,21 @@ import { useRef, useState } from "react";
 import { dataUrlToFile } from "./utils/image";
 import { transcribeImage } from "./services/sophiaApi";
 
+import { useRef, useState } from "react";
 import Header from "./components/Header";
 import Canvas from "./components/Canvas";
+import FloatingToolsMenu from "./components/FloatingToolsMenu";
+import { CHALK_COLORS } from "./constants/drawing";
+
 
 function App() {
   const canvasRef = useRef(null);
 
   const [status, setStatus] = useState("idle");
   const [expression, setExpression] = useState("");
+  const [activeTool, setActiveTool] = useState("pen");
+  const [activeColor, setActiveColor] = useState(CHALK_COLORS[0]?.hex || "#000");
+  const [brushSize, setBrushSize] = useState(4);
 
   const handleClear = () => {
     canvasRef.current?.clear();
@@ -59,7 +66,20 @@ function App() {
         expression={expression}
         onExpressionChange={setExpression}
       />
-      <Canvas ref={canvasRef} />
+      <Canvas
+        ref={canvasRef}
+        activeTool={activeTool}
+        activeColor={activeColor}
+        brushSize={brushSize}
+      />
+      <FloatingToolsMenu
+        activeTool={activeTool}
+        onToolChange={setActiveTool}
+        activeColor={activeColor}
+        onColorChange={setActiveColor}
+        brushSize={brushSize}
+        onBrushSizeChange={setBrushSize}
+      />
     </div>
   );
 }

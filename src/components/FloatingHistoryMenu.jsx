@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClockRotateLeft, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 export default function FloatingHistoryMenu({ items = [] }) {
@@ -25,9 +27,9 @@ export default function FloatingHistoryMenu({ items = [] }) {
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-full border border-slate-300 px-2 py-0.5 text-[10px] font-semibold text-slate-600 transition hover:border-slate-500"
+            className="rounded-full absolute -top-3 -right-4  cursor-pointer border border-slate-300 px-2 py-0 text-base font-semibold text-white bg-red-500 transition hover:border-slate-500"
           >
-            Fechar
+            ×
           </button>
         </div>
         {items.length === 0 ? (
@@ -56,11 +58,11 @@ export default function FloatingHistoryMenu({ items = [] }) {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-white text-xl text-slate-900 shadow-xl transition hover:-translate-y-0.5"
+        className="flex cursor-pointer h-14 w-14 items-center justify-center rounded-full border border-slate-900 bg-white text-xl text-slate-900 shadow-xl transition hover:-translate-y-0.5"
         aria-expanded={isOpen}
         aria-label="Abrir histórico"
       >
-        📚
+        {isOpen ? <FontAwesomeIcon icon={faXmark} /> : <FontAwesomeIcon icon={faClockRotateLeft} />}
       </button>
     </div>
   );

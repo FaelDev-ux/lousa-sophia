@@ -1,3 +1,4 @@
+
 export const CHALK_COLORS = [
   { hex: "#000000", label: "preto" },
   { hex: "#f7e16a", label: "Amarelo" },
@@ -9,8 +10,8 @@ export const CHALK_COLORS = [
 ];
 
 export const DRAWING_TOOLS = [
-  { id: "pen", emoji: "✏️", tip: "Caneta (P)" },
-  { id: "marker", emoji: "🖊️", tip: "Marcador (M)" },
-  { id: "chalk", emoji: "🖍️", tip: "Giz (G)" },
-  { id: "eraser", emoji: "🧹", tip: "Borracha (E)" },
+  { id: "pen", emoji: "faPencil", tip: "Caneta" },
+  { id: "marker", emoji: "faHighlighter", tip: "Marcador" },
+  { id: "chalk", emoji: "faPen", tip: "Giz (G)" },
+  { id: "eraser", emoji: "faEraser", tip: "Borracha" },
 ];

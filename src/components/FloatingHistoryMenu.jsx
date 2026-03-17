@@ -14,7 +14,7 @@ export default function FloatingHistoryMenu({ items = [] }) {
   return (
     <div className="fixed bottom-4 left-3 z-40 flex flex-col items-start">
       <div
-        className={`fixed left-3 top-20 z-40 w-[min(80vw,320px)] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur transition-all duration-200 ${
+        className={`pointer-events-none fixed left-3 top-20 z-40 w-[min(80vw,320px)] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur transition-all duration-200 ${
           isOpen
             ? "translate-x-0 opacity-100"
             : "pointer-events-none -translate-x-4 opacity-0"
@@ -25,7 +25,7 @@ export default function FloatingHistoryMenu({ items = [] }) {
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="rounded-full border border-slate-300 px-2 py-0.5 text-[10px] font-semibold text-slate-600 transition hover:border-slate-500"
+            className="pointer-events-auto rounded-full border border-slate-300 px-2 py-0.5 text-[10px] font-semibold text-slate-600 transition hover:border-slate-500"
           >
             Fechar
           </button>

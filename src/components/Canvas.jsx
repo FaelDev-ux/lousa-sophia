@@ -11,7 +11,7 @@ const TOOL_PRESETS = {
 const CANVAS_BACKGROUND = "#ffffff";
 
 const Canvas = forwardRef(function Canvas(
-  { activeTool, activeColor, brushSize },
+  { activeTool, activeColor, brushSize, onCanvasChange },
   ref
 ) {
   const canvasRef = useRef(null);
@@ -23,6 +23,7 @@ const Canvas = forwardRef(function Canvas(
 
   const configCanvas = useMemo(
     () => ({
+      onChange: onCanvasChange || null,
       loadTimeOffset: 5,
       lazyRadius: toolPreset.lazyRadius,
       brushRadius: resolvedBrushSize,

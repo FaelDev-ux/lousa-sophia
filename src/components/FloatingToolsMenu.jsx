@@ -39,9 +39,9 @@ export default function FloatingToolsMenu({
   : "Desenhe algo e confirme para receber uma explicação";
 
   return (
-    <div className="fixed bottom-4 right-3 z-50 flex flex-col items-end">
+    <div className="pointer-events-none fixed bottom-4 right-3 z-50 flex flex-col items-end">
       <div
-        className={`mb-3 w-72 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-lg backdrop-blur transition-all duration-200 ${
+        className={`pointer-events-none mb-3 w-72 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-lg backdrop-blur transition-all duration-200 ${
           isOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-3 opacity-0"
@@ -61,7 +61,7 @@ export default function FloatingToolsMenu({
                 type="button"
                 onClick={() => onToolChange(tool.id)}
                 title={tool.tip}
-                className={`flex h-11 w-11 items-center justify-center rounded-xl border text-lg transition ${
+                className={`pointer-events-auto flex h-11 w-11 items-center justify-center rounded-xl border text-lg transition ${
                   isActive
                     ? "border-slate-900 bg-slate-900 text-white"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"
@@ -86,7 +86,7 @@ export default function FloatingToolsMenu({
                 type="button"
                 onClick={() => onColorChange(color.hex)}
                 title={color.label}
-                className={`h-8 w-8 rounded-full border transition ${
+                className={`pointer-events-auto h-8 w-8 rounded-full border transition ${
                   isActive
                     ? "border-slate-900 ring-2 ring-slate-900/30"
                     : "border-slate-200 hover:border-slate-400"
@@ -111,13 +111,13 @@ export default function FloatingToolsMenu({
             step="1"
             value={brushSize}
             onChange={(event) => onBrushSizeChange(Number(event.target.value))}
-            className="h-2 w-full cursor-pointer accent-slate-900"
+            className="pointer-events-auto h-2 w-full cursor-pointer accent-slate-900"
           />
           <span className="text-xs text-slate-500">Grossa</span>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="pointer-events-auto flex items-center gap-2">
         <button
           type="button"
           onClick={isExplanationOpen ? onCloseExplanation : onOpenExplanation}
@@ -139,7 +139,7 @@ export default function FloatingToolsMenu({
       </div>
 
       <div
-        className={`fixed bottom-6 left-1/2 z-40 w-[min(90vw,520px)] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 px-5 py-4 shadow-2xl backdrop-blur transition-all duration-200 ${
+        className={`pointer-events-none fixed bottom-6 left-1/2 z-40 w-[min(90vw,520px)] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 px-5 py-4 shadow-2xl backdrop-blur transition-all duration-200 ${
           isExplanationOpen
             ? "translate-y-0 opacity-100"
             : "translate-y-6 opacity-0 pointer-events-none"
@@ -155,7 +155,7 @@ export default function FloatingToolsMenu({
           <button
             type="button"
             onClick={onCloseExplanation}
-            className="rounded-full absolute -top-7 -right-8  cursor-pointer border border-slate-300 px-2 py-0 text-base font-semibold text-white bg-red-500 transition hover:border-slate-500"
+            className="pointer-events-auto rounded-full absolute -top-7 -right-8  cursor-pointer border border-slate-300 px-2 py-0 text-base font-semibold text-white bg-red-500 transition hover:border-slate-500"
           >
             ×
           </button>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { dataUrlToFile } from "./utils/image";
 import { analyzeMath, transcribeImage } from "./services/sophiaApi";
@@ -22,6 +22,9 @@ function App() {
   const [explanationLoading, setExplanationLoading] = useState(false);
   const [explanationError, setExplanationError] = useState("");
   const [historyItems, setHistoryItems] = useState([]);
+  const autoRecognizeTimeoutRef = useRef(null);
+  const autoRecognizeInFlightRef = useRef(false);
+  const hasWrittenRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -52,14 +55,22 @@ function App() {
     canvasRef.current?.clear();
     setStatus("idle");
     setExpression("");
+    if (autoRecognizeTimeoutRef.current) {
+      clearTimeout(autoRecognizeTimeoutRef.current);
+      autoRecognizeTimeoutRef.current = null;
+    }
+    hasWrittenRef.current = false;
   };
 
   const handleReadCanvas = async () => {
+    if (autoRecognizeInFlightRef.current) return;
+    autoRecognizeInFlightRef.current = true;
     const pngDataUrl = canvasRef.current?.getPngDataUrl();
 
     if (!pngDataUrl) {
       setStatus("error");
       setExpression("");
+      autoRecognizeInFlightRef.current = false;
       return;
     }
 
@@ -83,8 +94,24 @@ function App() {
       console.error(error);
       setStatus("error");
       setExpression("");
+    } finally {
+      autoRecognizeInFlightRef.current = false;
     }
   };
+
+  const scheduleAutoRecognize = useCallback(() => {
+    hasWrittenRef.current = true;
+    if (autoRecognizeTimeoutRef.current) {
+      clearTimeout(autoRecognizeTimeoutRef.current);
+    }
+
+    autoRecognizeTimeoutRef.current = setTimeout(() => {
+      if (hasWrittenRef.current) {
+        hasWrittenRef.current = false;
+        handleReadCanvas();
+      }
+    }, 2000);
+  }, []);
 
   const handleExplain = async () => {
     setIsExplanationOpen(true);
@@ -160,6 +187,7 @@ function App() {
         activeTool={activeTool}
         activeColor={activeColor}
         brushSize={brushSize}
+        onCanvasChange={scheduleAutoRecognize}
       />
       <FloatingHistoryMenu items={historyItems} />
       <FloatingToolsMenu

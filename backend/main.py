@@ -26,7 +26,7 @@ app = FastAPI(title="SophIA API", description="API para a lousa inteligente Soph
 # Configuração do CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["https://lousa-sophia.vercel.app"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

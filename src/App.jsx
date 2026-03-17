@@ -176,7 +176,6 @@ function App() {
     <div className="h-screen w-screen p-1 flex justify-start flex-col items-center">
       <Header
         onClear={handleClear}
-        onReadCanvas={handleReadCanvas}
         status={status}
         expression={expression}
         onToggleExplanation={handleToggleExplanation}

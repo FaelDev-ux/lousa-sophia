@@ -6,7 +6,6 @@ export default function Header({
   onClear,
   status,
   expression,
-  onReadCanvas,
   onToggleExplanation,
   onExpressionChange,
 }) {
@@ -21,7 +20,6 @@ export default function Header({
       />
 
       <Button type="delete" text="Limpar" onClick={onClear} />
-      <Button type="delete" text="Ler imagem" onClick={onReadCanvas} />
     </header>
   );
 }

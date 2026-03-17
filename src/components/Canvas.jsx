@@ -2,13 +2,35 @@ import { forwardRef, useMemo, useRef, useImperativeHandle } from "react";
 import CanvasDraw from "react-canvas-draw";
 
 const TOOL_PRESETS = {
-  pen: { brushRadius: 2, lazyRadius: 0 },
-  marker: { brushRadius: 6, lazyRadius: 0 },
-  chalk: { brushRadius: 4, lazyRadius: 1 },
-  eraser: { brushRadius: 12, lazyRadius: 0 },
+  pen: { brushRadius: 2, lazyRadius: 6, opacity: 1 },
+  marker: { brushRadius: 8, lazyRadius: 5, opacity: 0.45 },
+  chalk: { brushRadius: 5, lazyRadius: 8, opacity: 0.75 },
+  eraser: { brushRadius: 12, lazyRadius: 4, opacity: 1 },
 };
 
 const CANVAS_BACKGROUND = "#ffffff";
+
+const hexToRgba = (hex, alpha = 1) => {
+  if (!hex || typeof hex !== "string") return `rgba(0,0,0,${alpha})`;
+  const cleaned = hex.replace("#", "").trim();
+  const isShort = cleaned.length === 3;
+  const r = parseInt(
+    isShort ? cleaned[0] + cleaned[0] : cleaned.slice(0, 2),
+    16
+  );
+  const g = parseInt(
+    isShort ? cleaned[1] + cleaned[1] : cleaned.slice(2, 4),
+    16
+  );
+  const b = parseInt(
+    isShort ? cleaned[2] + cleaned[2] : cleaned.slice(4, 6),
+    16
+  );
+  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
+    return `rgba(0,0,0,${alpha})`;
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 const Canvas = forwardRef(function Canvas(
   { activeTool, activeColor, brushSize, onCanvasChange },
@@ -28,7 +50,9 @@ const Canvas = forwardRef(function Canvas(
       lazyRadius: toolPreset.lazyRadius,
       brushRadius: resolvedBrushSize,
       brushColor:
-        activeTool === "eraser" ? CANVAS_BACKGROUND : activeColor || "#000",
+        activeTool === "eraser"
+          ? CANVAS_BACKGROUND
+          : hexToRgba(activeColor || "#000", toolPreset.opacity ?? 1),
       catenaryColor: "transparent",
       hideGrid: true,
       canvasWidth: window.innerWidth,

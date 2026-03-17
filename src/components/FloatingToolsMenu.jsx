@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { CHALK_COLORS, DRAWING_TOOLS } from "../constants/drawing";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSliders, faLightbulb, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faSliders, faLightbulb, faXmark, faPen, faPencil, faHighlighter, faEraser } from "@fortawesome/free-solid-svg-icons";
 
 const TOOL_LABELS = {
   pen: "Caneta",
@@ -9,6 +9,13 @@ const TOOL_LABELS = {
   chalk: "Giz",
   eraser: "Borracha",
 };
+
+const TOOL_LABELS_ICON = {
+  faPencil: faPencil,
+  faPen: faPen,
+  faEraser: faEraser,
+  faHighlighter: faHighlighter
+}
 
 export default function FloatingToolsMenu({
   activeTool,
@@ -39,12 +46,12 @@ export default function FloatingToolsMenu({
   : "Desenhe algo e confirme para receber uma explicação";
 
   return (
-    <div className="pointer-events-none fixed bottom-4 right-3 z-50 flex flex-col items-end">
+    <div className="fixed bottom-4 right-3 flex flex-col items-end">
       <div
-        className={`pointer-events-none mb-3 w-72 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-lg backdrop-blur transition-all duration-200 ${
+        className={`mb-3 w-72 fixed bottom-20 right-3 rounded-2xl border border-slate-200 bg-white/95 p-3 z-40 shadow-lg backdrop-blur transition-all duration-200 translate-y-0 ${
           isOpen
             ? "translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-3 opacity-0"
+            : "pointer-events-none translate-y-10 opacity-0"
         }`}
       >
         <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -61,13 +68,13 @@ export default function FloatingToolsMenu({
                 type="button"
                 onClick={() => onToolChange(tool.id)}
                 title={tool.tip}
-                className={`pointer-events-auto flex h-11 w-11 items-center justify-center rounded-xl border text-lg transition ${
+                className={`cursor-pointer flex h-11 w-11 items-center justify-center rounded-xl border text-lg transition ${
                   isActive
                     ? "border-slate-900 bg-slate-900 text-white"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"
                 }`}
               >
-                <span aria-hidden>{tool.emoji}</span>
+                <FontAwesomeIcon icon={TOOL_LABELS_ICON[tool.emoji]} />
                 <span className="sr-only">{tool.tip}</span>
               </button>
             );
@@ -86,7 +93,7 @@ export default function FloatingToolsMenu({
                 type="button"
                 onClick={() => onColorChange(color.hex)}
                 title={color.label}
-                className={`pointer-events-auto h-8 w-8 rounded-full border transition ${
+                className={`cursor-pointer h-8 w-8 rounded-full border transition ${
                   isActive
                     ? "border-slate-900 ring-2 ring-slate-900/30"
                     : "border-slate-200 hover:border-slate-400"

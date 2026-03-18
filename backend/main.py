@@ -18,7 +18,7 @@ if not chave_api:
 genai.configure(api_key=chave_api)
 
 # Usamos o modelo Flash, que é excelente para ler imagens (Visão) e textos rápidos
-modelo_ia = genai.GenerativeModel('gemini-1.5-flash')
+modelo_ia = genai.GenerativeModel('gemini-2.5-flash')
 
 # 3. Inicializa o app FastAPI
 app = FastAPI(title="SophIA API", description="API para a lousa inteligente SophIA")

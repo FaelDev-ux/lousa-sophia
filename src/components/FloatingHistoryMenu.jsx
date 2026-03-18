@@ -16,7 +16,7 @@ export default function FloatingHistoryMenu({ items = [] }) {
   return (
     <div className="fixed bottom-4 left-3 z-40 flex flex-col items-start">
       <div
-        className={`pointer-events-none fixed left-3 top-20 z-40 w-[min(80vw,320px)] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur transition-all duration-200 ${
+        className={` fixed left-3 top-20 z-40 w-[min(80vw,320px)] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur transition-all duration-200 ${
           isOpen
             ? "translate-x-0 opacity-100"
             : "pointer-events-none -translate-x-4 opacity-0"

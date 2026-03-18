@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://lousa-sophia-d88p.onrender.com";
+const API_BASE_URL = "http://1";
 
 export async function transcribeImage(file) {
   const formData = new FormData();

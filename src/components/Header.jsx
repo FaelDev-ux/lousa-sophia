@@ -1,17 +1,25 @@
 import logo from "../assets/images/logo.png";
-import ConfirmationInput from "./ConfirmationInput";
+import SophiaBar from "./SophiaBar";
 import Button from "./Button";
 
-export default function Header() {
+export default function Header({
+  onClear,
+  status,
+  expression,
+  onToggleExplanation,
+  onExpressionChange,
+}) {
   return (
-    <header className="w-full flex items-center justify-between self-start">
+    <header className="w-full gap-4 px-4 flex items-center justify-between self-start">
       <img className="max-w-30" src={logo} alt="logo Sophia" />
-      <ConfirmationInput />
-      <div>
-        <Button type="confirm" text="Confirmar"/>
-        <Button type="edit" text="Editar"/>
-        <Button type="delete" text="Limpar"/>
-      </div>
+      <SophiaBar
+        status={status}
+        expression={expression}
+        onToggleExplanation={onToggleExplanation}
+        onExpressionChange={onExpressionChange}
+      />
+
+      <Button type="delete" text="Limpar" onClick={onClear} />
     </header>
-  )
+  );
 }

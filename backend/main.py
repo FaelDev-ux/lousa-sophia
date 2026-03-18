@@ -74,13 +74,35 @@ async def analyze_math(expression: dict):
         if not texto_recebido:
             raise HTTPException(status_code=400, detail="Nenhuma expressão matemática foi enviada.")
         
-        # Prompt: Como a SophIA deve agir como professora
-        prompt = f"Você é a SophIA, uma professora de matemática amigável e didática. Resolva a seguinte expressão ou equação matemática passo a passo, explicando de forma clara e simples para um aluno: {texto_recebido}"
+        # Prompt: resposta curta e direta, apenas passos essenciais
+        prompt = (
+            "Você é a SophIA, professora de matemática objetiva. "
+            "Explique em poucas linhas (máx. 2 por passo(maximo 5 passos)) e de forma direta como chegar ao resultado, "
+            "sem enrolação, sem contexto extra, sem texto motivacional. "
+            "Use apenas matemática simples e passos essenciais. "
+            "Não use LaTeX, nem $...$, nem \\(...\\). "
+            "Use símbolos normais como + - * / ^ = e parênteses. "
+            "Quando houver raiz, use o símbolo √ (ex: √100 = 10), não use 'sqrt'. "
+            "Responda em português.\n"
+            "Formato obrigatório:\n"
+            "Passo 1: ...\n"
+            "Passo 2: ...\n"
+            "Passo 3: ...\n"
+            "Passo 4: ...\n"
+            "Resultado: ...\n"
+            "Cada item deve ficar em sua própria linha e ter apenas 1 frase curta.\n"
+            f"Expressão: {texto_recebido}"
+        )
         
         # Envia apenas texto para a IA agora
         resposta = modelo_ia.generate_content(prompt)
         
-        explicacao = resposta.text
+        explicacao = resposta.text.strip()
+        explicacao = explicacao.replace("Passo 1:", "\nPasso 1:")
+        explicacao = explicacao.replace("Passo 2:", "\nPasso 2:")
+        explicacao = explicacao.replace("Resultado:", "\nResultado:")
+        explicacao = explicacao.replace("sqrt", "√")
+        explicacao = explicacao.strip()
         
         return {
             "success": True,
